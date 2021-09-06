@@ -20,7 +20,7 @@
 ![1](../images/ymli/GPS-net.png)
 1 通过一个卷积操作（Ftr）实现 X->U 的转换，卷积核定义为V=[v_1, $v_2$, $v_3$,...$v_C$], C表示
 通道数， 最后输出U=['$u_1$, $u_2$, $u_3$,...$u_C$'], 第C个通道输出$u_C$ 计算公式如下：
-      $u_C$ = $v_C$ * X = ![](http://latex.codecogs.com/gif.latex?\\sum_{s=1}^{C'} v_{c}^{s} * X^{s}
+![](http://latex.codecogs.com/gif.latex?\\sum_{s=1}^{C'} v_{c}^{s} * X^{s})
 
 ## 创新点总结
 
