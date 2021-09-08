@@ -32,7 +32,7 @@
 <img src="https://latex.codecogs.com/svg.image?z_{c}&space;=&space;F_{sq}(u_{c})&space;=&space;\frac{1}{H&space;*&space;W}\sum_{i=1}^{H}\sum_{j=1}^{W}u_{c}\left&space;(&space;i,&space;j&space;\right&space;)" title="z_{c} = F_{sq}(u_{c}) = \frac{1}{H * W}\sum_{i=1}^{H}\sum_{j=1}^{W}u_{c}\left ( i, j \right )" />
 
 
-3 自适应重新校准。 使用一个两层的非线性全连接网络（一个降维层，一个升维层），公式如下：
+3 自适应重新校准。 使用一个两层的非线性全连接网络，公式如下：
 
 <img src="https://latex.codecogs.com/svg.image?s&space;=&space;F_{ex}(z,&space;W)&space;=&space;\sigma&space;(g(z,&space;W))&space;=&space;\sigma&space;(W_{2}\delta&space;(W_{1}z))" title="s = F_{ex}(z, W) = \sigma (g(z, W)) = \sigma (W_{2}\delta (W_{1}z))" />
 
