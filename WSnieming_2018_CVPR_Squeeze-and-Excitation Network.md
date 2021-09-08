@@ -32,7 +32,7 @@
 <img src="https://latex.codecogs.com/svg.image?z_{c}&space;=&space;F_{sq}(u_{c})&space;=&space;\frac{1}{H&space;*&space;W}\sum_{i=1}^{H}\sum_{j=1}^{W}u_{c}\left&space;(&space;i,&space;j&space;\right&space;)" title="z_{c} = F_{sq}(u_{c}) = \frac{1}{H * W}\sum_{i=1}^{H}\sum_{j=1}^{W}u_{c}\left ( i, j \right )" />
 
 
-3 自适应重新校准。 使用一个两层的非线性全连接网络（一个降维层，一个升维层。不太懂原理，后期学习一下），公式如下：
+3 自适应重新校准。 使用一个两层的非线性全连接网络（一个降维层，一个升维层），公式如下：
 
 <img src="https://latex.codecogs.com/svg.image?s&space;=&space;F_{ex}(z,&space;W)&space;=&space;\sigma&space;(g(z,&space;W))&space;=&space;\sigma&space;(W_{2}\delta&space;(W_{1}z))" title="s = F_{ex}(z, W) = \sigma (g(z, W)) = \sigma (W_{2}\delta (W_{1}z))" />
 
@@ -42,7 +42,7 @@
 
 <img src="https://latex.codecogs.com/svg.image?\widetilde{x_c}&space;=&space;F_{Scale}(u_c,&space;s_c)&space;=&space;s_c&space;u_c" title="\widetilde{x_c} = F_{Scale}(u_c, s_c) = s_c u_c" />
 
-## 创新点总结
+## 创新点总结和思路借鉴
 
 提出了SE block，利用全局信息显示建立通道间的依赖关系, 创新性的将注意力机制应用于CV领域，通过实验中验证，将SE块嵌入到目前已有的模型中，网络性能得到明显提升。
-
+对于自适应重新校准各个特征通道权重中使用的两层全连接神经网络，也可以尝试使用其它结构的网络来实现。
