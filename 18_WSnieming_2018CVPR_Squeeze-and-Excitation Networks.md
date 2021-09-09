@@ -1,4 +1,4 @@
-# Squeeze-and-Excitation Network
+# Squeeze-and-Excitation Networks
 
 ---
 
