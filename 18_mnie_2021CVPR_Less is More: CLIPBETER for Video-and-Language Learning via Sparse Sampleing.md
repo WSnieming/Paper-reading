@@ -2,9 +2,9 @@
 
 ---
 
-**URL:** https://arxiv.org/abs/1709.01507
+**URL:** https://arxiv.org/abs/2102.06183
 
-**Code:** https://github.com/hujie-frank/SENet
+**Code:** https://github.com/jayleicn/ClipBERT
 
 **Jnl/Conf:** CVPR 2021
 
@@ -26,15 +26,16 @@ CLIPBERT中的特征表示不同于离线提取的单模态特征，而是通过
 
 离线提取密集视频特征和文本特征建模的方式：
 
-p=H([〖F_V〗^SG (c1), 〖F_V〗^SG (c2), …, 〖F_V〗^SG (cN)]，〖F_I〗^SG (S))
+<img src="https://latex.codecogs.com/svg.image?p&space;=&space;H([F_v^{SG}(C_1),&space;F_v^{SG}(C_2),&space;...,&space;F_v^{SG}(C_N)],&space;F_l^{SG}(S))" title="p = H([F_v^{SG}(C_1), F_v^{SG}(C_2), ..., F_v^{SG}(C_N)], F_l^{SG}(S))" />
 
-视屏和对应文本分别用V和S表示，视频V可以进一步表示为N个时间相同视频片段的序列，例如，<img src="https://latex.codecogs.com/svg.image?V&space;=&space;[C_1,&space;C_2,&space;...,&space;C_N]" title="V = [C_1, C_2, ..., C_N]" />.  其中[F_V]^SG 和[F_I]^SG 表示视觉和语言编码器。上标SG表示停止梯度，意味着梯度不能通过两个编辑器反向传播。H是一个跨模态编辑器和预测器，它对编码的视频/语言输入 之间的关系建模并进行预测。p表示视频级的预测。然后用任务特定的损失函数Ltask来计算基于该预测和真实值q之间的损失值ltask， ltask = Ltask(p, q)。
+视屏和对应文本分别用V和S表示，视频V可以进一步表示为N个时间相同视频片段的序列，例如，<img src="https://latex.codecogs.com/svg.image?V&space;=&space;[C_1,&space;C_2,&space;...,&space;C_N]" title="V = [C_1, C_2, ..., C_N]" />.  其中F_V^{SG} 和F_I^{SG} 表示视觉和语言编码器。上标SG表示停止梯度，意味着梯度不能通过两个编辑器反向传播。H是一个跨模态编辑器和预测器，它对编码的视频/语言输入 之间的关系建模并进行预测。p表示视频级的预测。然后用任务特定的损失函数Ltask来计算基于该预测和真实值q之间的损失值ltask， ltask = Ltask(p, q)。
 clipbert并没有使用包含N个片段的全长视屏，而是在序列V中稀疏（并随机）采样N_train 个片段{C_Ti}, i=1, 2, …,N_train 。通常N_train<<N。对于一个抽样片段C_Ti 和文本输入S，产生一个预测P_Ti 。
 
-P_Ti  = H(F_V (C_Ti), F_I (S))
+<img src="https://latex.codecogs.com/svg.image?p&space;_{Ti}=&space;H(F_v(C_{Ti}),&space;F_l(S))" title="p _{Ti}= H(F_v(C_{Ti}), F_l(S))" />
 
 损失值ltask根据以下视频级共识计算：
-Itask  = Ltask(G(P_T1, P_T2  , …, P_TN), q)，N=Ntrain
+
+<img src="https://latex.codecogs.com/svg.image?I&space;_{task}=&space;L_{task}(G(p_{T1},&space;p_{T2},&space;...,&space;p_{TN}),&space;q)" title="I _{task}= L_{task}(G(p_{T1}, p_{T2}, ..., p_{TN}), q)" />，N=Ntrain
 
 G是预测/分数融合函数（例如，平均池化）。稀疏采样训练策略可以理解为一种类型的数据增强：在不同训练步骤中使用来自同一个视频的不同剪切子集，提高了模型的泛化能力.
 
