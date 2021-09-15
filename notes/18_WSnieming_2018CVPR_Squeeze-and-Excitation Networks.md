@@ -19,7 +19,7 @@
 以较小的计算量增加为代价得到了较大的网络性能提升。
 
 ## 方法
-![1](/images/WSnieming/20210906.1.png)
+![1](../images/mnie/20210906.1.png)
 
 1 通过一个卷积操作（Ftr）实现 X->U 的转换，卷积核定义为<img src="https://latex.codecogs.com/svg.image?V&space;=&space;[v_{1},&space;v_{2},&space;v_{3},...,v_{c}]" title="V = [v_{1}, v_{2}, v_{3},...,v_{c}]" />, C表示通道数， 最后输出<img src="https://latex.codecogs.com/svg.image?U&space;=&space;[u_{1},&space;u_{2},&space;u_{3},...,u_{c}]" title="U = [u_{1}, u_{2}, u_{3},...,u_{c}]" />, 第C个通道输出计算公式如下：
 
@@ -36,7 +36,7 @@
 
 <img src="https://latex.codecogs.com/svg.image?s&space;=&space;F_{ex}(z,&space;W)&space;=&space;\sigma&space;(g(z,&space;W))&space;=&space;\sigma&space;(W_{2}\delta&space;(W_{1}z))" title="s = F_{ex}(z, W) = \sigma (g(z, W)) = \sigma (W_{2}\delta (W_{1}z))" />
 
-![1](/images/WSnieming/20210906.2.png)
+![1](../images/mnie/20210906.2.png)
 
 4 将学习到的z（即每个通道的权重）与对应通道做乘法（相当于对U进行了放缩）。
 
