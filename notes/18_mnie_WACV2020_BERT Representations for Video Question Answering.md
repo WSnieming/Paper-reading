@@ -4,8 +4,6 @@
 
 **URL:** https://openaccess.thecvf.com/content_WACV_2020/papers/Yang_BERT_representations_for_Video_Question_Answering_WACV_2020_paper.pdf
 
-**Code:** https://github.com/jayleicn/ClipBERT
-
 **Jnl/Conf:** WACV 2020
 
 **Rate:** ★★★★
