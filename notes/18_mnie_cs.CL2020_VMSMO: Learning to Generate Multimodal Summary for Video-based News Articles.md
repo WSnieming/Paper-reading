@@ -38,7 +38,9 @@ VideoEncoder:
 
 ### Dual Interaction Module
 #### Conditional self-attention mechanism
-![1](../images/mnie/2021011.2.png)
+
+![1](../images/mnie/20211011.2.png)
+
  首先将片段表示通过全连接层投影到查询Q，键K，值V，然后自注意力机制的定义如下：
  
 <img src="https://latex.codecogs.com/svg.image?\alpha&space;_{i,j}&space;=&space;\frac{ep(Q^iK^j)}{\sum_{n=1}^{Ts}exp(Q^iK^n)}" title="\alpha _{i,j} = \frac{ep(Q^iK^j)}{\sum_{n=1}^{Ts}exp(Q^iK^n)}" />
