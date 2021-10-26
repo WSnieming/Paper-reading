@@ -18,7 +18,9 @@
 
 ## 方法
   在现有的分割模型中加入一个 temporal transformer 作为自适应模块来捕获连续帧之间的时间关系。当前帧被视为查询帧，之前的几个帧被视为关键帧和值帧
+  
 ![1](../images/mnie/20211026.1.png)
+
 在关键帧中，无需搜索整个区域，用适当的比例扩大搜索区域（红色区域）更加合适。对于查询帧中的每个查询点，先选择最近关键帧的小区域作为搜索区域，然后逐渐扩大到最远的关键帧， 称为 key selection， 基于此种选择策略，将时间复杂度从 O(Th^2w^2) 降低到 O(Thw), h,w 分别表示高度和宽度。
 将query selection 和 key selection 集成到temporal transformer中 形成 稀疏 temporal transformer.
 以下为整体网络结构：
