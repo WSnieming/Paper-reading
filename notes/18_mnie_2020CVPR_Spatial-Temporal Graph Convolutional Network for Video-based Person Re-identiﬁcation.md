@@ -47,6 +47,7 @@ Xm是第m层隐层特征，X0是通过CNN获得的特征patch。 Wm是被学习�
 
 ### 空间分支
 ![1](../images/mnie/20211103.3.png)
+
 独立地利用每一帧的块之间的关系来捕获视频序列中的结构信息。将GCNs的所有输出特征聚合在一起，形成视频的结构特征。
 
 <img src="https://latex.codecogs.com/svg.image?X_i^k&space;=&space;\hat{A}^s_i&space;X&space;^{k-1}_iW^k_i" title="X_i^k = \hat{A}^s_i X ^{k-1}_iW^k_i" />
