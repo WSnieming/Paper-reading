@@ -1,10 +1,10 @@
-# Hierarchical Conditional Relation Networks for Video Question Answering
+# Spatial-Temporal Graph Convolutional Network for Video-based Person Re-identiﬁcation
 
 ---
 
-**URL:** https://arxiv.org/pdf/2002.10698.pdf
+**URL:** https://openaccess.thecvf.com/content_CVPR_2020/papers/Yang_Spatial-Temporal_Graph_Convolutional_Network_for_Video-Based_Person_Re-Identification_CVPR_2020_paper.pdf
 
-**Code:** https://github.com/thaolmk54/hcrn-videoqa
+**Code:** 
 
 **Jnl/Conf:** CVPR 2020
 
@@ -13,25 +13,47 @@
 ---
 
 ## 论文简介
-
- 当前对QA视频建模的方法是构建神经架构，其中每个子系统都是为特定的定制目的或特定的数据模式而设计的。由于这种特殊性，这种手工制作的架构对于数据模式的变化、视频长度的变化或不同问题的解决往往不是最佳的。这导致了异构网络的大量激增。
-   本文介绍了称为条件关系网络（CRN）的通用神经单元，以及一种使用CRN作为构建块构建视频QA层次网络的方法。CRN是一种关系变换器，它根据上下文特征将一个张量对象数组封装并映射为一个新的同类数组。在此过程中，输入对象之间的高阶关系通过条件特征进行编码和调制。这种设计允许灵活构建复杂结构，如堆栈和层次结构，并支持迭代推理，使其适合多模态和结构化领域（如视频）的QA。HCRN在多个VideoQA数据集（TGIF-QA、MSVD-QA、MSRVTT-QA）上进行评估，证明具有竞争推理能力。
-
+  在基于视频的人物识别（re-ID）任务中存在一些挑战，比如视觉相似阴性样本的遮挡问题和视觉模糊问题。同时，作者发现不同帧可以为彼此提供互补信息，行人的结构信息可以为外观特征提供额外的辨别线索。文章提出了时空图卷积网络(STGCN)，希望通过对不同帧的时间关系和帧内的空间关系进行建模来解决这一问题。
+ 
 ## 方法
-![1](../images/mnie/20210928.1.png)
 
-![1](../images/mnie/20210928.2.png)
+![1](../images/mnie/20211103.1.png)
 
-### CRN
-   条件关系网络（CRN)将N个对象的数组和一个条件特征c都放在同一个向量空间Rd或者张量空间R^(W×H×d)
-中作为输入，CRN生成一个相同维度的对象的输出数组，其包含给定上全局下文的输入特征的高阶对象关系，如 Figure 2 中所显示。CRN模块的运行流程参见 Table 1 和 Algorithm 1.
+设计了3个分支， 上部分支是用于从相邻帧上的斑块中提取时间线索的时间分支， 中间分支是通过对空间关系建模来提取人体结构信息的空间分支， 底层分支是提取行人外观特征的全局分支。
+首先把每一帧放到CNN中，得到Fi ∈ Rh×w×c，F ={F1,F2,...,FT}，T为帧数。再把每个feature map Fi水平切分成P个patch，pi = 1,...,N。patch数量N为T * p, 把每个P做平均池化后得到patch特征向量为xi ∈ Rc, i =1,...,N.
+用GCN去学习patches之间的关系。 G(V,E)有N个节点，vi ∈ V,eij = (vi,vj) ∈E. 每个patches就是图中的节点，边e代表他们之间的关系。 A ∈ RN×N是这个图的邻接矩阵。
 
-### HCRN
-  通过对CRN block 的不同堆叠和排列，组成分层条件关系网络（HCRN）结构，在最低层次上，CRN对剪辑中的帧外观之间的关系进行编码，并将剪辑运动作为上下文进行集成；该输出在下一阶段由crn进行处理，CRN现在集成在语言上下文中；在下一阶段，CRN捕获剪辑编码之间的关系，并作为上下文集成在视频运动中；在最后阶段，CRN将视频编码与语言特征作为上下文集成。该模型通过允许CRN分层堆叠，自然地支持视频和关系推理中的分层结构建模；通过允许分阶段引入适当的上下文，该模型处理多模式融合和多步骤推理。模型具体结构如 Figure 3 所示。
+![1](../images/mnie/20211103.2.png)
 
-![1](../images/mnie/20210928.3.png)
+<img src="https://latex.codecogs.com/svg.image?e(x_i,&space;x_j)&space;=&space;\phi&space;(x_i)^T&space;\phi&space;(x_j)" title="e(x_i, x_j) = \phi (x_i)^T \phi (x_j)" />
+
+这个式子，表示两个patch的关系，φ表示原始面要素的对称变换，φ =wx。w是可通过反向传播学习的d×d维权重。这个变换的意义是：它允许我们自适应地选择和学习帧内或跨不同帧的不同补丁的相关性，结合其他节点的信息。
+
+归一化处理：<img src="https://latex.codecogs.com/svg.image?A_(i,j)&space;=&space;\frac{e^2(x_i,&space;x_j)}{\sum_{j=1}^{N}e^2(x_i,&space;x_j)}" title="A_(i,j) = \frac{e^2(x_i, x_j)}{\sum_{j=1}^{N}e^2(x_i, x_j)}" />
+
+自循环邻接矩阵:<img src="https://latex.codecogs.com/svg.image?\widetilde{A}&space;=&space;A&space;&plus;&space;I_n" title="\widetilde{A} = A + I_n" />
+
+近似图拉普拉斯：<img src="https://latex.codecogs.com/svg.image?\hat{A}&space;=&space;\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}" title="\hat{A} = \tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}" />
+
+### 时间分支
+
+<img src="https://latex.codecogs.com/svg.image?X^m&space;=&space;\hat{A}X^{m-1}W^m&space;" title="X^m = \hat{A}X^{m-1}W^m " />
+
+Xm是第m层隐层特征，X0是通过CNN获得的特征patch。 Wm是被学习的参数矩阵。每层图卷积后跟一个nomalization层用和LeakyRelu
+
+<img src="https://latex.codecogs.com/svg.image?X^m&space;:=&space;X^m&space;&plus;&space;X^{m-1},&space;2&space;\leq&space;m&space;\leq&space;M&space;&space;" title="X^m := X^m + X^{m-1}, 2 \leq m \leq M " />
+
+最后使用Maxpooling作用于Xm 最后得到 ft ∈ R1×dm 是时域GCN特征，dm设置为2048
+
+### 空间分支
+![1](../images/mnie/20211103.3.png)
+独立地利用每一帧的块之间的关系来捕获视频序列中的结构信息。将GCNs的所有输出特征聚合在一起，形成视频的结构特征。
+
+<img src="https://latex.codecogs.com/svg.image?X_i^k&space;=&space;\hat{A}^s_i&space;X&space;^{k-1}_iW^k_i" title="X_i^k = \hat{A}^s_i X ^{k-1}_iW^k_i" />
+
+k为第i帧上的第k层图卷积。 Wik ∈ Rdk ×dk输出的经过Max pooling降维后的特征矩阵为：XiK ∈ RP ×256最后，将视频的特征连接起来，最后的特征表示为fs。
+
 
 ## 创新点总结和思路借鉴
-
-  1，介绍了一种通用的神经网络单元条件关系网络（CRNs）和一种以CRNs为构建块的视频质量保证分层网络的构造方法。CRN是一个关系变换器，它根据上下文特征将一个张量对象数组封装并映射成一个同类的新数组。在此过程中，输入对象之间的高阶关系被条件特征编码和调制。
-  2，与基于时间注意的视频对象选择方法不同，HCRN侧重于视频中关系和层次的建模。这种方法和设计选择上的差异带来了显著的好处。CRN单元可以通过注意机制进一步增强，以覆盖更好的对象选择能力，从而可以进一步改进诸如帧QA之类的相关任务。
+ （1）利用GCN来模拟人体不同部位在一帧内和帧间的潜在关系，为人们提供更具鉴别力和鲁棒性的信息
+ （2）提出了时空GCN框架来联合建模视频层的整体斑块关系和帧级的单个帧的结构信息，该框架可以学习斑块之间的区分和鲁棒的时空关系，从而促进基于视频的Re-ID。
