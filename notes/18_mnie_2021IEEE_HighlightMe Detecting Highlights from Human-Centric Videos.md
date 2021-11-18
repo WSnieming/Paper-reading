@@ -33,14 +33,21 @@
 作用随时间的演变。
 
 每个模态的特征信息表示为一个Tensor： X_m = [X_m^1, X_m^2,...X_m^T],
+
 潜在特征 Z_m = STGCN(A_m, X_m; W_m^enc); A_m 表示E_m（边集合） 的邻接矩阵，W_m^enc 是一组可训练参数。
+
 突出分数 h_m = sigmoid(STGCN(A_m, Z_m; W_m^hlt)); 
+
 Z^_m = [h_m,h_m,...] ○ Z_m 
+
 X^_m = STGCN(A_m, Z^_m; W_m^dec)
 
 h_m^(max T) = max h_m, 最大化h_m, 对于 P 个人和每个人身上 N 个节点所对应的 P*N 个 h_m， 取其中的最大值来代替。
+
 α_m = # m 模态的可见帧数量  / T，  我们定义如果一个模态的一半以上的点都出现，则在改帧中可见。
+
 h^_m = α_m * h_m^(max T)
+
 最终，定义损失函数 L = ∑ ||X_m - X^_m|| + ||h^_m|| + λ_m||W_m||
 
 ### 实验结果
